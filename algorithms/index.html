@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Graph Algorithm Simulator — 3D visualizer for 30 algorithms</title>
+    <meta name="description" content="Build a graph in 3D and watch BFS, Dijkstra, Prim, Tarjan, Dinic and 25 more algorithms run step by step, with voice control." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='30' r='14' fill='%236ee7ff'/><circle cx='24' cy='74' r='14' fill='%23a78bfa'/><circle cx='76' cy='74' r='14' fill='%23f472b6'/></svg>" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo" aria-hidden="true"></span>
+        <div>
+          <h1>Graph Algorithm Simulator</h1>
+          <p>30 algorithms · 3D visualization · voice control</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button id="btn-voice" class="btn btn-voice" type="button" aria-pressed="false">🎙 Voice off</button>
+        <button id="btn-menu" class="btn btn-ghost only-mobile" type="button" aria-expanded="false">☰ Menu</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar" id="sidebar">
+        <section class="panel">
+          <h2>Algorithm</h2>
+          <select id="algo-select" aria-label="Select an algorithm"></select>
+          <p class="hint" id="algo-explanation">Pick an algorithm to see what it does.</p>
+          <div class="row">
+            <button id="btn-explain" class="btn btn-ghost" type="button">🔊 Explain</button>
+            <button id="btn-run" class="btn btn-primary" type="button">▶ Run</button>
+          </div>
+          <div class="row">
+            <button id="btn-pause" class="btn" type="button">⏸ Pause</button>
+            <button id="btn-step" class="btn" type="button">⏭ Step</button>
+            <button id="btn-restart" class="btn" type="button">⟲ Replay</button>
+          </div>
+          <label class="field">
+            <span>Speed <output id="speed-out">1.0×</output></span>
+            <input id="speed" type="range" min="0.25" max="4" step="0.25" value="1" />
+          </label>
+        </section>
+
+        <section class="panel">
+          <h2>Graph editor</h2>
+          <div class="row">
+            <input id="node-label" type="text" maxlength="4" placeholder="Label (auto)" aria-label="New node label" />
+            <button id="btn-add-node" class="btn btn-primary" type="button">+ Node</button>
+          </div>
+          <div class="row">
+            <select id="edge-from" aria-label="Edge from"></select>
+            <span class="arrow" id="edge-arrow">—</span>
+            <select id="edge-to" aria-label="Edge to"></select>
+          </div>
+          <div class="row">
+            <input id="edge-weight" type="number" value="1" step="1" aria-label="Edge weight" />
+            <button id="btn-add-edge" class="btn btn-primary" type="button">+ Edge</button>
+            <button id="btn-del-edge" class="btn btn-danger" type="button">− Edge</button>
+          </div>
+          <div class="row">
+            <select id="node-target" aria-label="Node to delete"></select>
+            <button id="btn-del-node" class="btn btn-danger" type="button">− Node</button>
+          </div>
+          <label class="switch">
+            <input id="directed" type="checkbox" />
+            <span>Directed graph</span>
+          </label>
+          <div class="row">
+            <button id="btn-sample" class="btn btn-ghost" type="button">Sample</button>
+            <button id="btn-random" class="btn btn-ghost" type="button">Random</button>
+            <button id="btn-reset" class="btn btn-danger" type="button">Reset</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Start &amp; target</h2>
+          <div class="row">
+            <label class="field"><span>Start / source</span><select id="start-node"></select></label>
+            <label class="field"><span>End / sink</span><select id="end-node"></select></label>
+          </div>
+          <label class="field"><span>Depth limit (DLS / IDDFS)</span><input id="depth-limit" type="number" value="2" min="0" step="1" /></label>
+        </section>
+
+        <section class="panel">
+          <h2>Result</h2>
+          <pre id="result-box" class="result">Run an algorithm to see its output here.</pre>
+        </section>
+      </aside>
+
+      <section class="stage">
+        <div id="canvas-wrap" class="canvas-wrap">
+          <div id="loading" class="loading">Loading 3D scene…</div>
+        </div>
+        <div class="statusbar">
+          <div class="progress"><div id="progress-fill"></div></div>
+          <p id="status">Ready. Add nodes, choose an algorithm and press Run.</p>
+        </div>
+        <ul class="legend" aria-label="Colour legend">
+          <li><i class="sw sw-idle"></i>Idle</li>
+          <li><i class="sw sw-visited"></i>Visited</li>
+          <li><i class="sw sw-active"></i>Active</li>
+          <li><i class="sw sw-result"></i>Result edge</li>
+          <li><i class="sw sw-reject"></i>Rejected</li>
+        </ul>
+      </section>
+    </main>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
